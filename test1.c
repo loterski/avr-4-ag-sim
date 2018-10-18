@@ -7,6 +7,10 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
+#include <stdlib.h>
+
+#include "led.h"
 
 #define KEY_MIN (1<<PB4)
 #define KEY_DOWN (1<<PB3)
@@ -16,74 +20,48 @@
 
 int main(void) {
 
-	int8_t value = 0; // value to modify
+	int16_t value = 0; // wartosc do obslugi
+	int16_t vposr1 = 0; // wartosc pomocnicza
+	int16_t vposr2 = 0; // wartosc pomocnicza
 
-	DDRC = 0xff; // PortC OUT to LED
+//	DDRC = 0xff; // PortC OUT to LED
 	DDRB = 0x00; // PortB IN from buttons
 
-	PORTC = 0x00; // LEDs on
+//	PORTC = 0x00; // LEDs on
 	PORTB = 0xff; // buttons on pullup
+
+	inicjalizacja_wyswietlacza();
+
+	sei();
 
 	while (1) {
 
 		if (!(PINB & KEY_MIN))
-			value = -120;
+			value = -999;
 		if (!(PINB & KEY_DOWN)) {
-			value -= 20;
-			if (value < -120)
-				value = -120;
+			value -= 1;
+			if (value < -999)
+				value = -999;
 		}
 		if (!(PINB & KEY_ZERO))
 			value = 0;
 		if (!(PINB & KEY_UP)) {
-			value += 20;
-			if (value > 120)
-				value = 120;
+			value += 1;
+			if (value > 999)
+				value = 999;
 		}
 		if (!(PINB & KEY_MAX))
-			value = 120;
+			value = 999;
 
-		switch (value) {
-		case -120:
-			PORTC = 64;
-			break;
-		case -100:
-			PORTC = 96;
-			break;
-		case -80:
-			PORTC = 32;
-			break;
-		case -60:
-			PORTC = 48;
-			break;
-		case -40:
-			PORTC = 16;
-			break;
-		case -20:
-			PORTC = 24;
-			break;
-		case 0:
-			PORTC = 8;
-			break;
-		case 20:
-			PORTC = 12;
-			break;
-		case 40:
-			PORTC = 4;
-			break;
-		case 60:
-			PORTC = 6;
-			break;
-		case 80:
-			PORTC = 2;
-			break;
-		case 100:
-			PORTC = 3;
-			break;
-		case 120:
-			PORTC = 1;
-			break;
-		}
+		if (value < 0) znak=1; else znak=0;
+
+		jednosci = abs(value) % 10;
+		vposr1 = (abs(value) - jednosci) / 10;
+		dziesiatki = vposr1 % 10;
+		vposr2 = (vposr1 - dziesiatki) / 10;
+		setki = vposr2 % 10;
+
+		if (value < 0) znak=1; else znak=0;
 
 		_delay_ms(200);
 
