@@ -3,7 +3,7 @@
  *
  *  Created on: 16 paź 2018
  *      Author: loterski
-
+ */
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 #include "led.h"
+#include "hd44780.h"
 
 #define KEY_MIN (1<<PB4)
 #define KEY_DOWN (1<<PB3)
@@ -31,6 +32,12 @@ int main(void) {
 	PORTB = 0xff; // buttons on pullup
 
 	inicjalizacja_wyswietlacza();
+
+	// podswietlenie HD44780
+	DDRA |= (1<<PA0);
+	PORTA |= (1<<PA0);
+
+	lcd_init();
 
 	sei();
 
@@ -62,10 +69,11 @@ int main(void) {
 		setki = vposr2 % 10;
 
 		if (value < 0) znak=1; else znak=0;
-
+		lcd_clear();
+		lcd_putstring("Value=");
+		lcd_putint(value);
 		_delay_ms(200);
 
 	}
 }
-*/
 
