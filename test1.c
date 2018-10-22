@@ -3,7 +3,7 @@
  *
  *  Created on: 16 paź 2018
  *      Author: loterski
- */
+
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -67,3 +67,5 @@ int main(void) {
 
 	}
 }
+*/
+
