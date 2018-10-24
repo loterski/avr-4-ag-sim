@@ -24,23 +24,23 @@
 
 // LCD connections
 
-#define D4_PORT	A
-#define D4_LINE	4
-#define D5_PORT	A
-#define D5_LINE	5
-#define D6_PORT	A
-#define D6_LINE	6
-#define D7_PORT	A
-#define D7_LINE	7
+#define D4_PORT	C
+#define D4_LINE	3
+#define D5_PORT	C
+#define D5_LINE	4
+#define D6_PORT	C
+#define D6_LINE	5
+#define D7_PORT	C
+#define D7_LINE	6
 
-#define RS_PORT	A
-#define RS_LINE	1
-#define E_PORT	A
-#define E_LINE	3
+#define RS_PORT	C
+#define RS_LINE	0
+#define E_PORT	C
+#define E_LINE	2
 #define USE_RW 1 // set to 0 in RW is short to ground
 #if USE_RW == 1
-#define RW_PORT	A
-#define RW_LINE	2
+#define RW_PORT	C
+#define RW_LINE	1
 #endif
 
 // LCD commands
